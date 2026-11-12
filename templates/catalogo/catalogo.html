@@ -1,0 +1,33 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}{{ titulo_pagina }} - Mi Tienda{% endblock %}
+
+{% block content %}
+    <h1>{{ titulo_pagina }}</h1>
+    <p style="color: #6B7280; margin-bottom: 2rem;">{{ subtitulo }}</p>
+
+    <!-- Uso de filtros: |length y |date -->
+    <p><small>Total de productos: <strong>{{ productos|length }}</strong> | Fecha de hoy: {{ anio|date:"d M Y" }}</small></p>
+
+    <div class="grid-productos">
+        <!-- AQUÍ ESTÁ EL BUCLE: debe decir exactamente esto -->
+        {% for producto in productos %}
+            <div class="card">
+                <h3>{{ producto.nombre|title }}</h3>
+                <p>Stock disponible: {{ producto.stock }}</p>
+                <p class="precio">$ {{ producto.precio }}</p>
+                
+                {% if producto.stock > 0 %}
+                    <span class="badge" style="background-color: #D1FAE5; color: #065F46;">Disponible</span>
+                {% else %}
+                    <span class="badge" style="background-color: #FEE2E2; color: #991B1B;">Agotado</span>
+                {% endif %}
+            </div>
+        {% empty %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: white; border-radius: 12px;">
+                <h3>No hay productos registrados aún</h3>
+                <p style="color: #6B7280;">Agrega productos desde el panel de administración.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
